@@ -1,6 +1,6 @@
 # SystemDesign Learning Path
 
-***Step1 Finish the Basics needed for System Design:***
+## Step1 Finish the Basics needed for System Design:***
 
 - Database
    DB basics:
@@ -49,10 +49,10 @@
    - https://vivek-singh.medium.com/system-design-cheat-sheet-318ba2e34723
    - https://www.educative.io/module/lesson/grokking-system-design-interview/7DWqV203YWO
     
-***Step2 Learn how to approach System design questions:***
+## Step2 Learn how to approach System design questions:
    - [How To Approach System Design Problems] (https://medium.com/enjoy-algorithm/how-to-approach-system-design-interview-4d8689813173)
 
-***Step3 System Design Patterns:***
+## Step3 System Design Patterns:
    - [System Design Patterns](https://www.educative.io/module/lesson/grokking-system-design-interview/YMEMlvz5jGO)
    Here is the list of patterns we will be discussing:
       - Bloom Filters
@@ -76,7 +76,7 @@
       - Read Repair
       - Merkle Trees   
       
-***Step4 System Designing Important Questions***
+## Step4 System Designing Important Questions
 
 - [ ] Designing a URL Shortening service like TinyURL 
 
