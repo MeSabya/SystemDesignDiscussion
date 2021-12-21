@@ -1,5 +1,13 @@
 # System Design — Sharding / Data Partitioning
 
+- Sharding is a method of splitting and storing a single logical dataset in multiple databases. 
+- By distributing the data among multiple machines, a cluster of database systems can store larger dataset and handle additional requests. 
+- Sharding is necessary if a dataset is too large to be stored in a single database. Moreover, many sharding strategies allow additional machines to be added. 
+- Sharding allows a database cluster to scale along with its data and traffic growth.
+
+>Data partitioning: It is the process of distributing data across a set of servers. It improves the scalability and performance of the system.
+
+
 ## Partitioning method
 1. Horizontal partitioning — also known as sharding
 2. Vertical partitioning
