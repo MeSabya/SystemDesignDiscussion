@@ -41,7 +41,7 @@
     PARTITION p3 VALUES LESS THAN (21)
     )
     ```
-2. **Key or hash based**:
+2. **Key or hash based partitioning**:
  
    Apply a hash function to some key attribute of the entry to get the partition number. e.g. partition based on the year in which an employee was hired.
    
@@ -59,21 +59,26 @@
     PARTITIONS 4;
     ```
     
-3. **List partitioning** 
-4. **Round robiin** 
-5. **Composite** 
-
+3. **List partitioning**:
+   In this scheme, each partition is assigned a list of values, so whenever we want to insert a new record, we will see which partition contains our key and then store it there.    For example, we can decide all users living in Iceland, Norway, Sweden, Finland, or Denmark will be stored in a partition for the Nordic countries. 
+4. **Round robiin partitioning**:
+   This is a very simple strategy that ensures uniform data distribution. With ‘n’ partitions, the ‘i’ tuple is assigned to partition (i mod n).
+   
+5. **Composite partitioning**:
+   Under this scheme, we combine any of the above partitioning schemes to devise a new scheme. For example, first applying a list partitioning scheme and then a hash-based   
+   partitioning. Consistent hashing could be considered a composite of hash and list partitioning where the hash reduces the key-space to a size that can be listed. 
+   
 ## Common problems of sharding
 Most of the constraints are due to the fact that operations across multiple tables or multiple rows in the same table will no longer run on the same server.
 
 1. **Joins and denormalization**:
-
+  Performing joins on a database that is running on one server is straightforward, but once a database is partitioned and spread across multiple machines it is often not feasible to perform joins that span database partitions.
   Joins will not be performance efficient since data has to be compiled from multiple servers.
   Workaround: 
   Denormalize the database so that queries can be performed from a single table. But this can lead to data inconsistency.
 
 2. **Referential integrity**:
-
+  As we saw that performing a cross-partition query on a partitioned database is not feasible; similarly, trying to enforce data integrity constraints such as foreign keys in a   partitioned database can be extremely difficult.Most RDBMS do not support foreign keys constraints across databases on different database servers.
   Difficult to enforce data integrity constraints (e.g. foreign keys).
   Workaround:
       1. Referential integrity is enforced by the application code.
@@ -82,8 +87,9 @@ Most of the constraints are due to the fact that operations across multiple tabl
 3. **Rebalancing**:
 
   Necessity of rebalancing
-    1. Data distribution is not uniform.
-    2. A lot of load on one shard.
+    1. The data distribution is not uniform, e.g., there are a lot of places for a particular ZIP code that cannot fit into one database partition.
+    2. There is a lot of load on a partition, e.g., there are too many requests being handled by the DB partition dedicated to user photos.
 
+In such cases, either we have to create more DB partitions or have to rebalance existing partitions, which means the partitioning scheme changed and all existing data moved to new locations. Doing this without incurring downtime is extremely difficult. Using a scheme like directory-based Partitioning does make rebalancing a more palatable experience at the cost of increasing the complexity of the system and creating a new single point of failure (i.e. the lookup service/database).
 
 
