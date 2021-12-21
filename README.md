@@ -98,7 +98,7 @@
 
 - [ ] Designing Typeahead Suggestion
 
-- [ ] Designing an API Rate Limiter
+- [x] Designing an API Rate Limiter [Completed on 21/12/2021]
   1. https://www.educative.io/module/lesson/grokking-system-design-interview/q2vgmDp6KL2
   2. https://medium.com/@saisandeepmopuri/system-design-rate-limiter-and-data-modelling-9304b0d18250
   3. https://medium.com/wineofbits/designing-a-distributed-rate-limiter-deep-dive-76d7e8d8452d
