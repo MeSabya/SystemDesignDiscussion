@@ -40,7 +40,7 @@
   - [ ] Consistency patterns
   - [ ] Availability patterns
   - [ ] [Distributed Caching](https://medium.com/rtkal/distributed-cache-design-348cbe334df1)
-  - [ ] Consistency Hashing(https://arpitbhayani.me/blogs/consistent-hashing)
+  - [ ] [Consistency Hashing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/3.ConsistentHashing.md)
   
   
   Just know broadly what is each layer for.
