@@ -4,7 +4,7 @@
 
 - Database
    DB basics:
-   - [ ] [How indexing Works internally](https://www.pankajtanwar.in/blog/how-database-indexing-actually-works-internally)
+   - [ X] [Database Indexing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/6.%20DatabaseIndexing.md)
    - [ ] Relational database management system (RDBMS)
       - Master-slave replication
       - Master-master replication
