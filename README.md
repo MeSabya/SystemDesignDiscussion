@@ -27,23 +27,26 @@
       1. [Details of LoadBalancing](https://medium.com/geekculture/load-balancing-da0bde7882f1)
       2. [Is client side load balancing a good idea](https://www.pankajtanwar.in/blog/system-design-is-client-side-load-balancing-a-good-idea)
   - [ ] [proxy Vs Reverse Proxy](https://www.pankajtanwar.in/blog/proxy-vs-reverse-proxy-using-a-real-life-example)
-  - [ ] servers, 
-  - [ ] Database servers, 
-  - [ ] caching servers, 
-  - [ ] precompute, 
-  - [ ] logging big data etc. 
-  - [ ] DNS
-  - [ ] Horizontal scaling
-  - [ ] Web server (reverse proxy)
-  - [ ] API server (application layer)
-  - [ ] Cache
   - [ ] Consistency patterns
   - [ ] Availability patterns
   - [ ] [Distributed Caching](https://medium.com/rtkal/distributed-cache-design-348cbe334df1)
   - [ ] [Consistency Hashing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/3.ConsistentHashing.md)
-  
-  
-  Just know broadly what is each layer for.
+  - [ ] Load Balancers
+  - [ ] Sharding 
+  - [ ] Caching / Memcache
+  - [ ] Distribution of Data
+  - [ ] Speed / space / time trade-offs
+  - [ ] Pagination
+  - [ ] API’s
+  - [ ] Client / Server relationships
+  - [ ] Partitioning
+  - [ ] Throughput
+  - [ ] CAP theorem
+  - [ ] Client and server architecture
+  - [ ] NoSQL
+  - [ ] Document databases
+  - [ ] Wide column databases
+   
   
   **References**:
    - https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/web_crawler/README.md
