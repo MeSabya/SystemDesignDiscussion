@@ -16,7 +16,6 @@
       - Key-value store
       - Document store
       - Wide column store
-      - Graph Database
       - SQL or NoSQL
 
 - Concurrency basics: threads, processes, threading in the language you know. Locks , mutex etc.
@@ -38,7 +37,6 @@
   - [ ] Speed / space / time trade-offs
   - [ ] Pagination
   - [ ] API’s
-  - [ ] Client / Server relationships
   - [ ] Partitioning
   - [ ] Throughput
   - [ ] CAP theorem
