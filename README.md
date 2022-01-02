@@ -39,11 +39,8 @@
   - [ ] API’s
   - [ ] Partitioning
   - [ ] Throughput
-  - [ ] CAP theorem
+  - [ ] [CAP theorem](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/3.%20CAPTheoram.md#what-is-cap-theorem)
   - [ ] Client and server architecture
-  - [ ] NoSQL
-  - [ ] Document databases
-  - [ ] Wide column databases
    
   
   **References**:
