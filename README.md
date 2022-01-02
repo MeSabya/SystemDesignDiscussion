@@ -6,8 +6,8 @@
    DB basics:
    - [ X] [Database Indexing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/6.%20DatabaseIndexing.md)
    - [ ] Relational database management system (RDBMS)
-      - Master-slave replication
-      - Master-master replication
+      - [Master-slave replication](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/2.%20data-replication.md#single-leader-replication-active-passive-or-master-slave-replication)
+      - [Master-master replication](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/2.%20data-replication.md#multi-leader-replication)
       - Federation
       - Sharding [How Sharding works](https://medium.com/@jeeyoungk/how-sharding-works-b4dec46b3f6) 
       - Denormalization
