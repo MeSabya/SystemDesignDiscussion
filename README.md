@@ -130,3 +130,8 @@
 - [Confusing Terms in System Design] (https://medium.com/swlh/confusing-terms-in-system-design-concurrency-vs-parallelism-performance-vs-scalability-proxy-vs-e3717b3bd81e)
 - [Scalable Web Architechture and Distributed Systems] (http://www.aosabook.org/en/distsys.html)
 - 
+
+### System Design Template 
+
+![image](https://user-images.githubusercontent.com/33947539/148498041-b60a7594-1398-451d-812b-9c49b626e6d1.png)
+
