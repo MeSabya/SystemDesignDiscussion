@@ -129,7 +129,24 @@
 - [The Most important one for the System Design] (https://github.com/shashank88/system_design)
 - [Confusing Terms in System Design] (https://medium.com/swlh/confusing-terms-in-system-design-concurrency-vs-parallelism-performance-vs-scalability-proxy-vs-e3717b3bd81e)
 - [Scalable Web Architechture and Distributed Systems] (http://www.aosabook.org/en/distsys.html)
-- 
+
+### Top 10 System Design Interview Questions
+1. Design a chat service
+2. Design a ride-sharing service
+3. Design a URL shortening service
+4. Design a social media service
+5. Design a social message board
+6. Design a file storage service
+7. Design a video streaming service
+8. Design an API Rate Limiter
+9. Design a proximity server
+10. Design a Type-Ahead service
+
+##### Reference: 
+[Top 10 System Design Questions](https://medium.com/geekculture/top-10-system-design-interview-questions-10f7b5ea123d)
+[Approaching System Design Questions](https://medium.com/enjoy-algorithm/how-to-approach-system-design-interview-4d8689813173)
+[Best System Design Cheat Sheet](https://vivek-singh.medium.com/system-design-cheat-sheet-318ba2e34723)
+
 
 ### System Design Template 
 
