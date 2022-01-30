@@ -142,6 +142,35 @@
 9. Design a proximity server
 10. Design a Type-Ahead service
 
+### More Design Questions 
+1. How Do You Design a Traffic Control System?
+2. How Do You Design a Website Like Pastebin?
+3. How Would You Create Your Own Instagram?
+4. How Do You Design a Twitter Clone?
+5. How to Design an ATM Machine?
+6. How Do You Design an API Rate Limiter?
+7. How Do You Design Twitter Search?
+8. How to Design a Web Crawler Like Google?
+9. How to Design BookMyShow?
+10. How Do You Design an Application Like Airbnb?
+11. How Do You Design an Elevator of the Lift System?
+12. How Do You Design Order Management System
+13. Design of Distributed job scheduler.
+14. Design of Read Receipts mechanism in Whatsapp.
+15. Design of Bus scheduling system.
+16. Design of Ticket booking system.
+17. Design of System to handle flash sales.
+18. Design of Netflix.
+19. Design of Access Management System.
+20. Design of Multiplayer game.
+21. Design of Railways Cloak Room.
+22. Design of Payment mechanism.
+23. Design of Price automation system.
+24. Design of Voice assistant used in mobile.
+25. Design of Event booking system.
+26. Design of MP3 player.
+27. Design of File conversion tool.
+
 ##### Reference: 
 [Top 10 System Design Questions](https://medium.com/geekculture/top-10-system-design-interview-questions-10f7b5ea123d)
 [Approaching System Design Questions](https://medium.com/enjoy-algorithm/how-to-approach-system-design-interview-4d8689813173)
