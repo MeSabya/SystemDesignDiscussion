@@ -40,5 +40,8 @@ we would need to compromise with availability if we have tight consistency and p
 A: Let’s look at our earlier estimate about the data to be stored. 100TB of data can’t be stored on a single machine.
 Let’s say that we somehow have a really beefy machine which can store that amount of data, that machine would have to handle all of the queries ( All of the load ) which could lead to a significant performance hit.
 
+### References:
+https://levelup.gitconnected.com/system-design-interview-replicated-and-strongly-consistent-key-value-store-b690d8e15c9a
+https://levelup.gitconnected.com/system-design-interview-replicated-and-strongly-consistent-key-value-store-b690d8e15c9a
 
 
