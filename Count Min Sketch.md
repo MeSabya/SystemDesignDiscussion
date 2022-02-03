@@ -51,6 +51,7 @@ Some common applications of this amazing data structure are listed below:
 
 3. Database Query Plan: Databases engines use the count-min sketch to find good execution strategies. If we have a query like select * from a, b where a.n = b.n, to estimate the size of the join we can maintain two sketches, one for occurrences of n in a and other for n in b. We can then query these sketches to estimate the size of the join.
 
-
+## References
+https://github.com/21zhouyun/CountMinSketch/blob/master/main.py
 
 
