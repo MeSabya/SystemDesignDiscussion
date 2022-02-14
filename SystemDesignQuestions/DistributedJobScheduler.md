@@ -176,8 +176,9 @@ If any row hasn’t been updated in ~30 seconds, retry it by pushing the job ID 
 **RDBMS**: 
 
 I chose an RDBMS because we will later need ACID properties, meaning transactions. The database is sharded into an adequate number of shards to distribute the load and data. We use Active-Passive/Master-Slave Replication for each Partition in a semi-synchronous fashion. One Slave/Follower will follow synchronously while the others will receive the Replication Stream asynchronously. That way, we can be sure that at least one Slave holds up to date data in case the Master fails (due to network partitions, server outage, etc.) and that Slave will be promoted to be the new Leader.
- 
-**Job Executor Service:**
+
+
+**Job Executor Service**:
 
 1. On Startup it will fetch the Database Partitioning info from ZooKeeper as well as the Partition Assignment between other instances and the Database Partitions.
 2. It will choose a Database Partition which has the least number of Executors assigned to balance out the number of Executors that execute Jobs for a all the different Database Partitions.
@@ -189,6 +190,7 @@ I chose an RDBMS because we will later need ACID properties, meaning transaction
 8. Finally after successfully/unsuccessfully executing a Job, we send/publish/produce a Message to another Kafka Queue.
 
 Regarding Point 7 (to expand the horizon on possibilities): We could also use Broadcast Messaging or a Gossip Protocol to detect Node failures. I'm excited to hear your argumentation.
+
 
 **Result Handler Service**: 
 
