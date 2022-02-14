@@ -214,3 +214,5 @@ We use Message Queues (here Kafka which is more of an (append) log than a Queue 
 
 ## References:
 https://leetcode.com/discuss/general-discussion/1082786/System-Design%3A-Designing-a-distributed-Job-Scheduler-or-Many-interesting-concepts-to-learn
+
+https://towardsdatascience.com/ace-the-system-design-interview-job-scheduling-system-b25693817950
