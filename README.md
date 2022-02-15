@@ -175,6 +175,7 @@
 [Top 10 System Design Questions](https://medium.com/geekculture/top-10-system-design-interview-questions-10f7b5ea123d)
 [Approaching System Design Questions](https://medium.com/enjoy-algorithm/how-to-approach-system-design-interview-4d8689813173)
 [Best System Design Cheat Sheet](https://vivek-singh.medium.com/system-design-cheat-sheet-318ba2e34723)
+[Advanced System Design Interview](https://www.educative.io/courses/grokking-adv-system-design-intvw/xoEXr9614RB)
 
 
 ### System Design Template 
