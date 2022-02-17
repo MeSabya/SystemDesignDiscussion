@@ -84,4 +84,15 @@ Some of the popular cache eviction algorithms are:
 
 ***Random Replacement (RR)***: Randomly selects a candidate item and discards it to make space when necessary.
 
+## Distributed caches
+The cache is divided up using a consistent hashing function and each of its nodes owns part of the cached data. If a requesting node is looking for a certain piece of data, it can quickly use the hashing function to locate the information within the distributed cache to determine if the data is available.
+
+Pros: Cache space can be increased easily by adding more nodes to the request pool.
+Cons: A missing node can lead to cache loss. We may get around this issue by storing multiple copies of the data on different nodes.
+
+## Design a Cache System:
+
+A single machine is going to handle 1M QPS
+Map and LinkedList should be used as the data structures. We may get better performance on the double-pointer linked-list on the remove operation.
+Master-slave technique
 
