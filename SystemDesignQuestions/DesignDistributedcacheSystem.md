@@ -36,9 +36,11 @@ The cache is divided up using consistent hashing and each request can be routed 
 **CDN: CDN(Content Distribution Network)**
 is used where a large amount of static content is served. The response can be HTML file, CSS file, JavaScript file, pictures, videos, etc. First, request ask the CDN for data, if it exists then the data will be returned. If not, the CDN will query the backend servers and then cache it locally.
 
-## Cache Writing Policies
+## Cache Writing Policies or Cache Invalidation
 
 A Cache Policy is a set of rules which define how the data will be loaded (and evicted) from a cache memory. A cache is made of copies of data, and is thus transient storage, so when writing we need to decide when to write to the cache and when to write to the primary data store.
+
+If the data is modified in the database, it should be invalidated in the cache, if not, this can cause inconsistent application behavior
 
 The most common cache writing policies are as follows:
 
