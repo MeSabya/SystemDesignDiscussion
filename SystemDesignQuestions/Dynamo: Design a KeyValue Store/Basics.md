@@ -1,0 +1,60 @@
+# Dynamo: How to Design a Key-value Store?
+
+Goal: Design a distributed key-value store that is highly available (i.e., reliable), highly scalable, and completely decentralized.
+
+## What is Dynamo?
+
+Dynamo – not to be confused with DynamoDB, which was inspired by Dynamo’s design – is a distributed key-value storage system that provides an “always-on” (or highly available) experience at a massive scale. 
+
+👉 In CAP theorem terms, Dynamo falls within the category of **AP systems (i.e., available and partition tolerant) and is designed for high availability and partition tolerance at the expense of strong consistency**. 
+
+The primary motivation for designing Dynamo as a highly available system was the observation that the availability of a system directly correlates to the number of customers served. Therefore, the main goal is that the system, even when it is imperfect, should be available to the customer as it brings more customer satisfaction. On the other hand, inconsistencies can be resolved in the background, and most of the time they will not be noticeable by the customer. Derived from this core principle, Dynamo is aggressively optimized for availability.
+
+## Design goals
+
+As stated above, the main goal of Dynamo is to be highly available. Here is the summary of its other design goals:
+
+**Scalable**: The system should be highly scalable. We should be able to throw a machine into the system to see proportional improvement.
+
+**Decentralized**: To avoid single points of failure and performance bottlenecks, there should not be any central/leader process.
+
+**Eventually Consistent**: Data can be optimistically replicated to become eventually consistent. This means that instead of incurring write-time costs to ensure data correctness throughout the system (i.e., strong consistency), inconsistencies can be resolved at some other time (e.g., during reads). Eventual consistency is used to achieve high availability.
+
+## System APIs
+
+The Dynamo clients use put() and get() operations to write and read data corresponding to a specified key. This key uniquely identifies an object.
+
+**get(key)**: The get operation finds the nodes where the object associated with the given key is located and returns either a single object or a list of objects with conflicting versions along with a context. The context contains encoded metadata about the object that is meaningless to the caller and includes information such as the version of the object (more on this below).
+
+**put(key, context, object)**: The put operation finds the nodes where the object associated with the given key should be stored and writes the given object to the disk. The context is a value that is returned with a get operation and then sent back with the put operation. The context is always stored along with the object and is used like a cookie to verify the validity of the object supplied in the put request.
+
+Dynamo treats both the object and the key as an arbitrary array of bytes (typically less than 1 MB). 
+
+👉 *It applies the MD5 hashing algorithm on the key to generate a 128-bit identifier which is used to determine the storage nodes that are responsible for serving the key.*
+
+## High-level Architecture:
+At a high level, Dynamo is a Distributed Hash Table (DHT) that is replicated across the cluster for high availability and fault tolerance.
+Dynamo’s architecture can be summarized as follows :
+
+### Data distribution:
+   Dynamo uses Consistent Hashing to distribute its data among nodes. **Consistent hashing** also makes it easy to add or remove nodes from a Dynamo cluster.
+
+### Data replication and consistency:
+   Data is replicated optimistically, i.e., Dynamo provides **eventual consistency**.
+   
+### Handling temporary failures:
+   To handle temporary failures, Dynamo replicates data to a **sloppy quorum** of other nodes in the system instead of a strict majority quorum.
+   
+### Inter-node communication and failure detection:
+   Dynamo’s nodes use **gossip protocol** to keep track of the cluster state.
+   
+### High availability:
+  Dynamo makes the system “always writeable” (or highly available) by using **hinted handoff**.   
+  
+### Conflict resolution and handling permanent failures
+
+Since there are no write-time guarantees that nodes agree on values, Dynamo resolves potential conflicts using other mechanisms:
+
+Use vector clocks to keep track of value history and reconcile divergent histories at read time.
+In the background, dynamo uses an anti-entropy mechanism like Merkle trees to handle permanent failures.  
+
