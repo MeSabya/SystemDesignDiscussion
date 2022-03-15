@@ -12,6 +12,7 @@
       - Sharding [How Sharding works](https://medium.com/@jeeyoungk/how-sharding-works-b4dec46b3f6) 
       - Denormalization
       - SQL tuning
+      - [SQL transaction isolation levels]()
    - [ ] NoSQL
       - Key-value store
       - Document store
