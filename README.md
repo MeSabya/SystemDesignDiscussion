@@ -5,7 +5,7 @@
 - Database
    DB basics:
    - [ X] [Database Indexing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/6.%20DatabaseIndexing.md)
-   - [ ] Relational database management system (RDBMS)
+   - [ ] Scaling a relational database 
       - [Master-slave replication](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/2.%20data-replication.md#single-leader-replication-active-passive-or-master-slave-replication)
       - [Master-master replication](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/2.%20data-replication.md#multi-leader-replication)
       - Federation
@@ -27,12 +27,11 @@
       1. [Details of LoadBalancing](https://medium.com/geekculture/load-balancing-da0bde7882f1)
       2. [Is client side load balancing a good idea](https://www.pankajtanwar.in/blog/system-design-is-client-side-load-balancing-a-good-idea)
   - [ ] [proxy Vs Reverse Proxy](https://www.pankajtanwar.in/blog/proxy-vs-reverse-proxy-using-a-real-life-example)
-  - [ ] Consistency patterns
+  - [ ] [Consistency patterns](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/SystemDesignBasics/1.3ConsistencyPatterns.md)
   - [ ] Availability patterns
   - [ ] [Distributed Caching](https://medium.com/rtkal/distributed-cache-design-348cbe334df1)
   - [ ] [Consistency Hashing](https://github.com/MeSabya/SystemDesignDiscussion/blob/main/3.ConsistentHashing.md)
-  - [ ] Load Balancers
-  - [ ] Sharding 
+  - [ ] Load Balancers 
   - [ ] Caching / Memcache
   - [ ] Distribution of Data
   - [ ] Speed / space / time trade-offs
