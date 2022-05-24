@@ -1,0 +1,69 @@
+# What is Kafka?
+
+Apache Kafka is an open-source publish-subscribe-based messaging system (Kafka can work as a message queue too, more on this later). 
+It is distributed, durable, fault-tolerant, and highly scalable by design. Fundamentally, 
+it is a system that takes streams of messages from applications known as producers, 
+stores them reliably on a central cluster (containing a set of brokers), 
+and allows those messages to be received by applications (known as consumers) that process the messages.
+
+👉 At a high level, we can call Kafka a **distributed Commit Log**. 
+   A Commit Log **(also known as a Write-Ahead log or a Transactions log)** is an append-only data structure that can persistently store a sequence of records. 
+   Records are always appended to the end of the log, and once added, records cannot be deleted or modified. Reading from a commit log always happens from left to right (or old to new).
+
+👉 Kafka stores all of its messages on disk. Since all reads and writes happen in sequence, Kafka takes advantage of sequential disk reads
+
+## Why Kafka?
+
+- Multiple producers
+- Multiple consumers
+- Disk based persistence
+- Offline messaging
+- Messaging replay
+- Distributed
+- Super Scalable
+- Low-latency
+- High volume
+- Fault tolerance
+- Real-time Processing
+
+
+## High level Kafka Design
+
+👉 **These are four main parts in a Kafka system:**
+
+- Broker: Handles all requests from clients (produce, consume, and metadata) and keeps data replicated within the cluster. There can be one or more brokers in a cluster.
+- Zookeeper: Keeps the state of the cluster (brokers, topics, users).
+- Producer: Sends records to a broker.
+- Consumer: Consumes batches of records from the broker.
+
+### Kafka Broker
+A Kafka cluster consists of one or more servers (Kafka brokers) running Kafka. 
+Producers are processes that push records into Kafka topics within the broker. A consumer pulls records off a Kafka topic.
+
+### Records
+A record is a message or an event that gets stored in Kafka. Essentially, it is the data that travels from producer to consumer through Kafka. A record contains a key, a value, a timestamp, and optional metadata headers
+
+### Topics and Partitions
+
+When an event stream enters Kafka, it is persisted as a topic. In Kafka’s universe, a topic is a materialized event stream. In other words, a topic is a stream at rest.
+
+In simple terms, a topic is like a table in a database, and the messages are the rows in that table.
+
+- Each message that Kafka receives from a producer is associated with a topic.
+- Consumers can subscribe to a topic to get notified when new messages are added to that topic.
+- A topic can have multiple subscribers that read messages from it.
+- In a Kafka cluster, a topic is identified by its name and must be unique.
+- Messages in a topic can be read as often as needed — unlike traditional messaging systems, messages are not deleted after consumption. Instead, Kafka retains messages for a configurable amount of time or until a storage size is exceeded. Kafka’s performance is effectively constant with respect to data size, so storing data for a long time is perfectly fine.
+
+#### Kafka Topic Partitions and Segments
+
+Kafka’s topics are divided into several partitions. While the topic is a logical concept in Kafka, a partition is the smallest storage unit that holds a subset of records owned by a topic. Each partition is a single log file where records are written to it in an append-only fashion.
+
+Kafka brokers splits each partition into segments. Each segment is stored in a single data file on the disk attached to the broker. By default, each segment contains either 1 GB of data or a week of data, whichever limit is attained first. When the Kafka broker receives data for a partition, as the segment limit is reached, it will close the file and start a new one:
+
+In the following diagram, the topic partition has 3 replicas, broker 2 is the leader replica, and brokers 1 and 3 are the follower replicas. Each of the replicas has a segment for the topic partition, which is backed up by its own file.
+
+![image](https://user-images.githubusercontent.com/33947539/170002254-459d3777-f2bd-4f3c-81c2-7127f1039cc9.png)
+
+When the data is written to a log segment, by default it is not flushed to disk immediately. Kafka relies on the underlying operating system to lazily flush the data to disk, which improves performance. Although this might appear to increase the risk of data loss, in most cases, each topic partition will be configured to have more than 1 replica. So, the data will exist on more than one broker.
+
