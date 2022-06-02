@@ -53,6 +53,7 @@ Another common Kafka gotcha in system design interviews is that people don’t p
 Thousands of topics and tens of thousands of partitions are definitely on the large end of the spectrum. The typical Kafka paradigm is fewer and larger topics with a reasonable amount of partitions. So the design of one Kafka topic per user and even one partition per user in a system design interview may be frowned upon. If you find yourselves heading to that rabbit hole, you may want to step back and consider whether a distributed key-value store like Cassendra is more appropriate.
 
 References
+https://levelup.gitconnected.com/6-things-you-need-to-know-about-kafka-before-using-it-in-a-system-design-interview-1fc31451732c
 
 [1] https://kafka.apache.org/
 
@@ -65,6 +66,7 @@ References
 [5] https://levelup.gitconnected.com/raft-consensus-protocol-made-simpler-922c38675181
 
 [6] https://www.confluent.io/blog/transactions-apache-kafka/
+
 
 
 
