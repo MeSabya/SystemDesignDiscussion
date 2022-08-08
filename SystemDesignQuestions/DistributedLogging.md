@@ -67,8 +67,11 @@ Data Warehouse: SQL Server, MySQL, PostgreSQL
 
 Middleware: Couchbase
 
-![image](https://user-images.githubusercontent.com/33947539/183388243-f56a37c5-1997-4745-8c60-5647736af6ea.png)
+![image](https://user-images.githubusercontent.com/33947539/183388243-f56a37c5-1997-4745-8c60-5647736af6ea.png)\
 
+👉 ***Why FluentD ?***
+
+For Kubernetes environments, Fluentd seems the ideal candidate due to its built-in Docker logging driver and parser – which doesn’t require an extra agent to be present on the container to push logs to Fluentd. In comparison with Logstash, this makes the architecture less complex and also makes it less risky for logging mistakes. The fact that Fluentd, like Kubernetes, is another CNCF project is also an added bonus!
 
 
 ### Zookeeper 
@@ -88,5 +91,5 @@ will manage the visualization and exploration of our data. It also has a powerfu
 ## Reference:
 https://medium.com/kubernetes-tutorials/cluster-level-logging-in-kubernetes-with-fluentd-e59aa2b6093a
 https://leetcode.com/discuss/interview-question/system-design/622704/Design-a-system-to-store-and-retrieve-logs-for-all-of-eBay
-
+https://dzone.com/articles/distributed-logging-architecture-for-microservices
 
