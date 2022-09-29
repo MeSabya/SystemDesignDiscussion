@@ -5,6 +5,12 @@ Moreover, it is also not necessary that a microservice is deployed on only one n
 
 In real world production environment, there would be running so many of machines containing hundreds of containers that can be terminated, restarted, or rescheduled at any point in time. This is the nature containerisation of the system is a challenge in itself and better think about how to obtain application logs that not to be lost.
 
+There are three problems that need to be solved here. 
+
+- How to ship logs from the machine
+- How to process and save it 
+- Show or visualize it.
+
 ***Kubernetes architecture provide a number of ways to manage application logs. Some of them approaches to consider are:***
 
 👉 **Native mode**: Run the kubectl logs command to directly view the local logs or use the log driver of Docker Engine to redirect logs to files, syslog, or Fluentd.
