@@ -11,6 +11,9 @@ There are three problems that need to be solved here.
 - How to process and save it 
 - Show or visualize it.
 
+![image](https://user-images.githubusercontent.com/33947539/193112988-a21696e8-7a5f-437d-b4a0-e12af563ea69.png)
+
+
 ***Kubernetes architecture provide a number of ways to manage application logs. Some of them approaches to consider are:***
 
 👉 **Native mode**: Run the kubectl logs command to directly view the local logs or use the log driver of Docker Engine to redirect logs to files, syslog, or Fluentd.
