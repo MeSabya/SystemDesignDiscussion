@@ -19,7 +19,7 @@ The WebSocket manager is responsible for maintaining a mapping between an active
 
 A WebSocket server also communicates with another service called message service. Message service is a repository of messages on top of the Mnesia database cluster. The message service exposes APIs to receive messages by various filters, such as user ID, message ID, and so on.
 
-![Uploading image.png…]()
+![image](https://user-images.githubusercontent.com/33947539/200179231-e209f27b-84d6-4dd7-bd5b-89e6a4d9305e.png)
 
 Now, let’s assume that user A wants to send a message to user B. As shown in the above figure, both users are connected to different WebSocket servers. The system performs the following steps to send messages from user A to user B:
 
@@ -54,3 +54,26 @@ The asset service sends the ID of media files to the receiver via the message se
 The content is loaded onto a CDN if the asset service receives a large number of requests for some particular content.
 
 The following figure demonstrates the components involved in sharing media files over WhatsApp messenger:
+
+![image](https://user-images.githubusercontent.com/33947539/200179351-441aea61-b6da-4d7d-a92c-1c0df503de0b.png)
+
+## Support for group messages#
+WebSocket servers don’t keep track of groups because they only track active users. However, some users could be online and others could be offline in a group. For group messages, the following three main components are responsible for delivering messages to each user in a group:
+
+- Group message handler
+- Group message service
+- Kafka
+
+Let’s assume that user A wants to send a message to a group with some unique ID—for example, Group/A. The following steps explain the flow of a message sent to a group:
+
+Since user A is connected to a WebSocket server, it sends a message to the message service intended for Group/A.
+
+The message service sends the message to Kafka with other specific information about the group. The message is saved there for further processing. In Kafka terminology, a group can be a topic, and the senders and receivers can be producers and consumers, respectively.
+
+Now, here comes the responsibility of the group service. The group service keeps all information about users in each group in the system. It has all the information about each group, including user IDs, group ID, status, group icon, number of users, and so on. This service resides on top of the MySQL database cluster, with multiple secondary replicas distributed geographically. A Redis cache server also exists to cache data from the MySQL servers. Both geographically distributed replicas and Redis cache aid in reducing latency.
+
+The group message handler communicates with the group service to retrieve data of Group/A users.
+
+In the last step, the group message handler follows the same process as a WebSocket server and delivers the message to each user.
+
+![Uploading image.png…]()
