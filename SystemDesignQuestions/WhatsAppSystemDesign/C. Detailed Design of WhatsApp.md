@@ -76,4 +76,7 @@ The group message handler communicates with the group service to retrieve data o
 
 In the last step, the group message handler follows the same process as a WebSocket server and delivers the message to each user.
 
+![image](https://user-images.githubusercontent.com/33947539/200179466-5b2f9d89-1f09-42d5-a245-002ab9d1ae3c.png)
+
+Final diagram:
 ![Uploading image.png…]()
