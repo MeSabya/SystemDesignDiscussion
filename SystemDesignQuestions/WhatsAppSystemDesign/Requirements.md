@@ -47,3 +47,7 @@ No. of servers=Total connections per day/No. of connections per server=2 billion
 
 ![image](https://user-images.githubusercontent.com/33947539/200176597-3e37fca3-0bec-49b4-af92-afdd1a0f43f0.png)
 
+## Building blocks we will use#
+The design of WhatsApp utilizes the following building blocks that have also been discussed in the initial chapters:
+
+![image](https://user-images.githubusercontent.com/33947539/200176708-b0fb91eb-ab88-4fbd-8708-de6949592caa.png)
