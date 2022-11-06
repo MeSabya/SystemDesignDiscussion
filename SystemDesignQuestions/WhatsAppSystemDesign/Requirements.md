@@ -23,4 +23,26 @@
 ## Resource estimation
 
 ### Storage estimation
+As there are more than 100 billion messages shared per day over WhatsApp, let’s estimate the storage capacity based on this figure. Assume that each message takes 100 Bytes on average. Moreover, the WhatsApp servers keep the messages only for 30 days. So, if the user doesn’t get connected to the server within these days, the messages will be permanently deleted from the server.
+
+100 billion/day∗100 Bytes=10 TB/day
+
+For 30 days, the storage capacity would become the following:
+
+30∗10 TB/day=300 TB/month
+
+### Bandwidth estimation
+According to the storage capacity estimation, our service will get 10TB of data each day, giving us a bandwidth of 926 Mb/s.
+
+10 TB/86400sec≈926Mb/s
+
+![image](https://user-images.githubusercontent.com/33947539/200176507-dfe4dedf-c078-4b03-a2dc-91cb1c7e7e40.png)
+
+### Number of servers estimation#
+WhatsApp handles around 10 million connections on a single server.
+
+Let’s move to the estimation of the number of servers:
+
+No. of servers=Total connections per day/No. of connections per server=2 billion/10 million=200 servers
+
 
