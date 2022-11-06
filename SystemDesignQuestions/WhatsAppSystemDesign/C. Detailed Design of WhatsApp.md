@@ -21,3 +21,36 @@ A WebSocket server also communicates with another service called message service
 
 ![Uploading image.png…]()
 
+Now, let’s assume that user A wants to send a message to user B. As shown in the above figure, both users are connected to different WebSocket servers. The system performs the following steps to send messages from user A to user B:
+
+User A communicates with the corresponding WebSocket server to which it is connected.
+
+The WebSocket server associated with user A identifies the WebSocket to which user B is connected via the WebSocket manager. If user B is online, the WebSocket manager responds back to user A’s WebSocket server that user B is connected with its WebSocket server.
+
+Simultaneously, the WebSocket server sends the message to the message service and is stored in the Mnesia database where it gets processed in the first-in-first-out order. As soon as these messages are delivered to the receiver, they are deleted from the database.
+
+Now, user A’s WebSocket server has the information that user B is connected with its own WebSocket server. The communication between user A and user B gets started via their WebSocket servers.
+
+If user B is offline, messages are kept in the Mnesia database. Whenever they become online, all the messages intended for user B are delivered via push notification. Otherwise, these messages are deleted permanently after 30 days.
+
+Both users (sender and receiver) communicate with the WebSocket manager to find each other’s WebSocket server. Consider a case where there can be a continuous conversation between both users. This way, many calls are made to the WebSocket manager. To minimize the latency and reduce the number of these calls to the WebSocket manager, each WebSocket server caches the following information:
+
+If both users are connected to the same server, the call to the WebSocket manager is avoided.
+
+It caches information of recent conversations about which user is connected to which WebSocket server.
+
+## Send or receive media files#
+
+So far, we’ve discussed the communication of text messages. But what happens when a user sends media files? Usually, the WebSocket servers are lightweight and don’t support heavy logic such as handling the sending and receiving of media files. We have another service called the asset service, which is responsible for sending and receiving media files.
+
+Moreover, the sending of media files consists of the following steps:
+
+The media file is compressed and encrypted on the device side.
+
+The compressed and encrypted file is sent to the asset service to store the file on blob storage. The asset service assigns an ID that’s communicated with the sender. The asset service also maintains a hash for each file to avoid duplication of content on the blob storage. For example, if a user wants to upload an image that’s already there in the blob storage, the image won’t be uploaded. Instead, the same ID is forwarded to the receiver.
+
+The asset service sends the ID of media files to the receiver via the message service. The receiver downloads the media file from the blob storage using the ID.
+
+The content is loaded onto a CDN if the asset service receives a large number of requests for some particular content.
+
+The following figure demonstrates the components involved in sharing media files over WhatsApp messenger:
