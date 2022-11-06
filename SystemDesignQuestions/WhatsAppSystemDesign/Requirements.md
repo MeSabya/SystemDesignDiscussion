@@ -45,4 +45,5 @@ Let’s move to the estimation of the number of servers:
 
 No. of servers=Total connections per day/No. of connections per server=2 billion/10 million=200 servers
 
+![image](https://user-images.githubusercontent.com/33947539/200176597-3e37fca3-0bec-49b4-af92-afdd1a0f43f0.png)
 
