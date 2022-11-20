@@ -1,7 +1,8 @@
 ## Fulfill the requirements#
 Our non-functional requirements for the proposed WhatsApp design are low latency, consistency, availability, and security. Let’s discuss how we have achieved these requirements in our system:
 
-Low latency: We can minimize the latency of the system at various levels:
+### Low latency: 
+We can minimize the latency of the system at various levels:
 
 We can do this through geographically distributed WebSocket servers and the cache associated with them.
 
@@ -9,7 +10,7 @@ We can use Redis cache clusters on top of MySQL database clusters.
 
 We can use CDNs for frequently sharing documents and media content.
 
-z### Consistency: 
+### Consistency: 
 The system also provides high consistency in messages with the help of a FIFO messaging queue with strict ordering. However, the ordering of messages would require the Sequencer to provide ID with appropriate causality inference mechanisms to each message. For offline users, the Mnesia database stores messages in a queue. The messages are sent later in a sequence after the user goes online.
 
 ### Availability: 
