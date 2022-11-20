@@ -55,7 +55,7 @@ The content is loaded onto a CDN if the asset service receives a large number of
 
 The following figure demonstrates the components involved in sharing media files over WhatsApp messenger:
 
-![image](https://user-images.githubusercontent.com/33947539/200179351-441aea61-b6da-4d7d-a92c-1c0df503de0b.png)
+![image](https://user-images.githubusercontent.com/33947539/202915193-73557802-7676-4b22-b08a-ceec87592d02.png)
 
 ## Support for group messages#
 WebSocket servers don’t keep track of groups because they only track active users. However, some users could be online and others could be offline in a group. For group messages, the following three main components are responsible for delivering messages to each user in a group:
@@ -63,6 +63,8 @@ WebSocket servers don’t keep track of groups because they only track active us
 - Group message handler
 - Group message service
 - Kafka
+
+![image](https://user-images.githubusercontent.com/33947539/200179351-441aea61-b6da-4d7d-a92c-1c0df503de0b.png)
 
 Let’s assume that user A wants to send a message to a group with some unique ID—for example, Group/A. The following steps explain the flow of a message sent to a group:
 
@@ -76,7 +78,6 @@ The group message handler communicates with the group service to retrieve data o
 
 In the last step, the group message handler follows the same process as a WebSocket server and delivers the message to each user.
 
-![image](https://user-images.githubusercontent.com/33947539/200179466-5b2f9d89-1f09-42d5-a245-002ab9d1ae3c.png)
-
 Final diagram:
-![Uploading image.png…]()
+
+![image](https://user-images.githubusercontent.com/33947539/200179466-5b2f9d89-1f09-42d5-a245-002ab9d1ae3c.png)
