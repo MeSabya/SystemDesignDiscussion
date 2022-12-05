@@ -4,20 +4,19 @@ Summary of Notification Service:
 ================================
 
 1. Functional requirement 
---------------------------
+
    - NS should able to send notifications to all subscribers.
    - NS should be able to prioritize the notifications.
    - NS should be able to send simple/bulk notifications
    - Email, SMS , push notifications on mobile 
    
 2. NFR 
----------------------------
    - latency: NS should have low latency to deliver OTPs.  
    - Available - should be highly avl.
    - scalable - To support higher no of customers.
    
 3. HLD
-----------------------------
+
    - service ---> LB --> NS --> Msg Q --> Email , Msg , APN services --> user devices
 
 4. NS Database to use 
