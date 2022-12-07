@@ -1,4 +1,6 @@
-###### Reference: https://nayak-saabyasachi.medium.com/design-a-notification-system-c9c47ed5b9af
+###### Reference: 
+https://nayak-saabyasachi.medium.com/design-a-notification-system-c9c47ed5b9af
+https://github.com/aws-samples/multi-language-notification-with-amazon-translate-amazon-pinpoint
 
 Summary of Notification Service:
 ================================
