@@ -126,6 +126,7 @@ By creating a cluster role.
 
 
 ## Reference:
+https://jmrobles.medium.com/fluentd-elasticsearch-kibana-your-on-premise-logging-platform-98822ab43e60
 https://medium.com/kubernetes-tutorials/cluster-level-logging-in-kubernetes-with-fluentd-e59aa2b6093a
 https://leetcode.com/discuss/interview-question/system-design/622704/Design-a-system-to-store-and-retrieve-logs-for-all-of-eBay
 https://dzone.com/articles/distributed-logging-architecture-for-microservices
