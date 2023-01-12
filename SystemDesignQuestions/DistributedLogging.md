@@ -97,6 +97,35 @@ will manage the visualization and exploration of our data. It also has a powerfu
 
 ![image](https://user-images.githubusercontent.com/33947539/183392605-be95a451-702c-434b-adcd-c8814c1c6ddd.png)
 
+## Summary of FluentD setup:
+
+### FluentD Setup per node:
+========================
+
+Step1. Grant Permissions to Fluentd
+------------------------------------
+ 
+Fluentd will be collecting logs both from user applications and cluster components such as kube-apiserver and kube-scheduler, so we need to grant it some permissions.
+
+The first thing we need to do is to create an identity for the future Fluentd DaemonSet . Let’s create a new ServiceAccount in the kube-system namespace where Fluentd should be deployed:
+
+
+Step2. let’s grant Fluentd permissions to read, list, and watch pods and namespaces in your Kubernetes cluster
+----------------------------------------------------------------------------------------------------------------
+
+By creating a cluster role.
+
+Step3: Bind the cluster role and service accountusing cluster role binding
+--------------------------------------------------------------------------
+
+Step4: Launch FluentD DaemonSet , add serviceAccount and serviceAccountName there as created above. Used the plugin fluent-plugin-elasticsearch to write and index the logs in Elastic.
+
+Step5: In case you need to modify FluentD configs , create another config file and attach it to the created Daemonset.
+
+Step6: Need to have a Kibana setup to see the FluenD logs.
+
+
+
 ## Reference:
 https://medium.com/kubernetes-tutorials/cluster-level-logging-in-kubernetes-with-fluentd-e59aa2b6093a
 https://leetcode.com/discuss/interview-question/system-design/622704/Design-a-system-to-store-and-retrieve-logs-for-all-of-eBay
