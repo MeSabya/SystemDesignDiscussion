@@ -80,6 +80,8 @@ However, even though Redis doesn't inherently support partitioning, you can stil
 ### Redis Cluster: 
 Deploy Redis Cluster, which consists of multiple Redis nodes organized into a cluster. Each node in the cluster is responsible for a subset of the data.
 
+![image](https://github.com/MeSabya/SystemDesignDiscussion/assets/33947539/6e9d08b4-fe8f-4644-9a61-86878f65b852)
+
 ### Key Hashing: 
 Redis Cluster uses key-based sharding to determine which node is responsible for storing each key. When you set or get a key in Redis, Redis Cluster calculates a hash of the key and determines which slot (and consequently, which node) the key belongs to.
 
