@@ -187,3 +187,5 @@ func main() {
 	fmt.Printf("Hits in the last 60 seconds: %d\n", hits)
 }
 ```
+## Reference
+https://systemdesign.one/distributed-counter-system-design/
