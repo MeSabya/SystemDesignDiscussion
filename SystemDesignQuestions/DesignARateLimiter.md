@@ -1,5 +1,9 @@
 # Design a Rate Limiter or a Circuit Breaker 
 
+Important references: 
+- https://systemsdesign.cloud/SystemDesign/RateLimiter
+- https://medium.com/geekculture/system-design-design-a-rate-limiter-81d200c9d392
+
 **Problem**: 
 ##### Design rate limiter — A rate limiter is a tool that monitors the number of requests per a window time a service agrees to allow. 
 ✓ **Functional Requirements**:
