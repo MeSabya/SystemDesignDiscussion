@@ -196,6 +196,7 @@ The biggest problem with IP based throttling is when multiple users share a sing
 A right approach could be to do both per-IP and per-user rate limiting, as they both have weaknesses when implemented alone, 
 
 
+![image](https://github.com/user-attachments/assets/2d2603e7-a592-400a-9199-097abf8ab437)
 
 
 
