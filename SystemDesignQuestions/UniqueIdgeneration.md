@@ -1,5 +1,7 @@
 # Unique Id generation in distributed systems
 
+Reference: https://github.com/mukul96/System-Design-AlexXu/blob/master/System%20Design%20Interview%20An%20Insider%E2%80%99s%20Guide%20by%20Alex%20Xu%20(z-lib.org).pdf
+
 ## Existing Solutions
 ### UUID
 UUIDs are 128-bit hexadecimal numbers that are globally unique. The chances of the same UUID getting generated twice is negligible.
@@ -80,7 +82,44 @@ The final ID is returned to the application server. The application server will 
 >The epoch timestamp is the number of seconds that have elapsed since January 1, 1970, midnight (GMT). However, since our timestamp needs to be of millisecond precision, we will use EpochMilli to find the timestamp in milliseconds.
 
 
+## How Twitter snowflake approach for Unique ID generation  is meeting all our non functional requirements ?
 
+Twitter’s Snowflake ID generation strategy is designed to meet key non-functional requirements (NFRs) such as scalability, uniqueness, ordering, and performance. Let's analyze how it aligns with these requirements:
+
+### 1. Uniqueness
+Snowflake IDs are globally unique as they are generated using a combination of:
+
+- Timestamp (41 bits) → Ensures time-based uniqueness
+- Machine ID (10 bits) → Prevents collisions across different machines
+- Sequence Number (12 bits) → Prevents duplicates within the same millisecond
+This approach eliminates the risk of ID clashes across distributed systems.
+
+### 2. Scalability
+The decentralized approach ensures that IDs are generated without a central coordination service, avoiding single points of failure.
+With 10-bit machine identifiers, up to 1024 nodes can generate IDs concurrently.
+Each machine can generate 4096 unique IDs per millisecond (12-bit sequence number).
+This ensures that the system can scale horizontally as traffic grows.
+
+### 3. Performance & Low Latency
+Since each machine generates its own IDs, there is no network overhead from a central ID generator.
+Generating an ID is a simple bitwise operation, which is extremely fast (microseconds-level latency).
+This minimizes delays in high-throughput environments such as social media platforms.
+
+### 4. Time Ordering (Sortability)
+Snowflake IDs maintain chronological order, as the highest-order bits are based on timestamps.
+This allows for efficient sorting and indexing, which is critical for features like feed ranking and database sharding.
+
+### 5. Fault Tolerance
+If a node fails, other nodes can continue generating IDs without disruption.
+The design ensures that even in the case of clock drift, the system can safely wait and recover.
+
+### 6. Distributed System Friendly
+Works well in microservices and distributed databases where multiple systems need to generate IDs independently.
+Eliminates dependency on centralized ID generation mechanisms (e.g., databases, UUIDs).
+
+### 7. Space Efficiency
+A Snowflake ID is only 64 bits, which is smaller than a UUID (128 bits), reducing storage and indexing overhead.
+This makes it an efficient choice for databases, caches, and messaging systems.
 
 
 
