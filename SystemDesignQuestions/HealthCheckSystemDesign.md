@@ -91,3 +91,9 @@ Alerts on anomalies (e.g., high failure rate).
 
 KEDA is watching Prometheus health check failure rate (or other metrics).
 ✅ If too many failed health checks, KEDA scales Jobs to perform more frequent checks.
+
+How Does KEDA Scale Jobs?
+
+- Creates Jobs on demand: Instead of running a Job continuously, KEDA creates new Job instances when an event (like a message in a queue or database entry) occurs.
+- Scales Job replicas dynamically: KEDA scales Jobs based on external metrics (e.g., Kafka, AWS SQS, RabbitMQ, Prometheus).
+- Deletes idle Jobs: When there's no workload, KEDA scales down to zero Jobs to save resources.
