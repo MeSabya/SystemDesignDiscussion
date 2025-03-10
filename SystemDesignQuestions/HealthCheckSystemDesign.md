@@ -63,6 +63,11 @@ Jobs are short-lived and ensure isolated execution.
 
 It performs health checks based on the CRD config (e.g., HTTP, TCP, gRPC).
 If the endpoint is unhealthy, retries occur as per the CRD.
+In Kubernetes, Jobs create Pods, but a Job itself is not a Pod. Here's how it works:
+
+A Job is a higher-level Kubernetes resource that ensures a specified number of Pods complete successfully.
+When you create a Job, it creates and manages one or more Pods to perform the given task.
+If a Pod in a Job fails, the Job may create a new Pod to retry the task, depending on the restart policy.
 ⬇
 
 ### 4️⃣ Pod publishes the result to a Kafka topic
