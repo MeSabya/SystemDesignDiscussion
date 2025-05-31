@@ -98,6 +98,27 @@ and that Slave will be promoted to be the new Leader.
 Cassandra has a great write-throughput due to the fact that it is Leaderless (no time lost for fail overs for example), 
 replicates asynchronously (can be configured) etc. We are also okay with Eventual Consistency because it is not crucial if we see a result with some delay.
 
+## Scalability in DB
+When the system grows:
+
+- The number of configuration entries increases massively.
+- Reads and writes to Config DB can become hotspots.
+Horizontal scaling is needed to:
+
+- Avoid single-node bottlenecks.
+- Parallelize access to config data.
+
+### Solution
+Partition the Config DB by jobID (or configID) to distribute load.
+
+#### 1. Hash-Based Partitioning
+- Apply a hash function on jobID, modulo total partitions.
+- Ensures even distribution.
+- Example: partition = hash(jobID) % N
+
+#### 2. Range-Based Partitioning
+Partition by a range of jobIDs or by created_at timestamp (e.g., monthly).
+
 ## How to ensure no duplicate job gets scheduled?
 
 <details>
@@ -254,7 +275,8 @@ spec:
 https://dev.to/sklarsa/how-to-add-kubernetes-powered-leader-election-to-your-go-apps-57jh
 https://faun.pub/understanding-kubernetes-leases-from-concept-to-implementation-bc423e868276
 
-![image](https://github.com/user-attachments/assets/22d2429b-6050-4d32-9cda-83d8fb7f7c32)
+![image](https://github.com/user-attachments/assets/a442c362-5a0c-496b-8557-6e931d4f9329)
+
 
 
 
