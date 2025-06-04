@@ -154,22 +154,101 @@ class SlidingWindowCounterRateLimiter(object):
 ### Rate Limiting in Distributed Systems
 The above algorithms works very well for single server applications. But the problem becomes very complicated when there is a distributed system involved with multiple nodes or app servers.It becomes more complicated if there are multiple rate limited services distributed across different server regions. The two broad problems that comes across in these situations are Inconsistency and Race Conditions.
 
-#### Inconsistency
-In case of complex systems with multiple app servers distributed across different regions and having their own rate limiters, we need to define a global rate limiter.
-A consumer could surpass the global rate limiter individually if it receives a lot of requests in a small time frame. The greater the number of nodes, the more likely the user will exceed the global limit.
+### Scenario: Distributed API Gateway Rate Limiting
+You run a global API service — api.example.com — deployed across 3 regions:
 
-There are two ways to solve for these problems:
+- us-east-1
+- eu-west-1
+- ap-southeast-1
 
-**Sticky Session**: Have a sticky session in your load balancers so that each consumer gets sent to exactly one node. The downsides include lack of fault tolerance & scaling problems when nodes get overloaded. You can read more about sticky sessions here
+Each region has multiple load-balanced app servers, and you want to enforce this rate limit per user:
 
->By default, an Application Load Balancer routes each request independently to a registered target based on the chosen load-balancing algorithm. However, you can use the sticky session feature (also known as session affinity) to enable the load balancer to bind a user's session to a specific target. This ensures that all requests from the user during the session are sent to the same target. This feature is useful for servers that maintain state information in order to provide a continuous experience to clients. To use sticky sessions, the client must support cookies.
+Each user is allowed 100 requests per minute globally, no matter which region or server they hit.
 
+### Problem: Inconsistency in Distributed Rate Limiters
+Let’s say a user sends:
 
-**Centralized Data Store**: Use a centralized data store like Redis or Cassandra to handle counts for each window and consumer. The added latency is a problem, but the flexibility provided makes it an elegant solution.
+- 40 requests to us-east-1
+- 40 requests to eu-west-1
+- 40 requests to ap-southeast-1
 
-#### Race Conditions
-Race conditions happen in a get-then-set approach with high concurrency. Each request gets the value of counter then tries to increment it. But by the time that write operation is completed, several other requests have read the value of the counter(which is not correct). Thus a very large number of requests are sent than what was intended. This can be mitigated using locks on the read-write operation, thus making it atomic. But this comes at a performance cost as it becomes a bottleneck causing more latency.
+Each region is enforcing its own 100 RPM limit, so none of them reject the user.
 
+But globally, the user sent 120 requests, and no server rejected them. This violates your limit.
+
+This happens because each region is unaware of other regions’ counters. That’s inconsistency.
+
+### Problem: Race Conditions in Shared Store
+
+Let’s say instead you use Redis as a centralized counter store and all app servers increment this shared counter.
+
+But here’s what can happen:
+
+- 10 parallel requests come in at the same time.
+- All of them read the current counter value: count = 98.
+- All decide it’s under the limit, so they increment it.
+- Final value becomes 108, violating the limit.
+- This happens because of a race condition: multiple reads and writes aren't synchronized.
+
+### ✅ Solution 1: Sticky Sessions (Load Balancer Affinity)
+What happens:
+
+- You configure the load balancer to stick a user to a specific server (e.g., based on a cookie).
+- All requests from a user during a session go to only one app server.
+- That server maintains local rate limiter (e.g., token bucket or leaky bucket).
+-  Pros:
+-  Simple and fast (no cross-node calls).
+-  No need for centralized data store.
+
+- Cons:
+- Scalability issue: If a user sends too many requests, that server gets overloaded.
+- Fault tolerance issue: If the server dies, rate limit state is lost.
+- Doesn't work well with auto-scaling or stateless systems.
+
+### ✅ Solution 2: Centralized Store (Redis)
+You move rate limit counters to a centralized, strongly consistent store like Redis.
+
+For example:
+
+- Key: rate_limit:{user_id}:{window_start}
+- Value: request count
+- TTL: set to end of window (e.g., 60 seconds)
+
+Each request does:
+
+```text
+INCR rate_limit:{user_id}:{window_start}
+```
+
+And checks if value ≤ 100.
+
+🔧 Pros:
+Globally consistent
+
+Easily shareable across regions and nodes
+
+🚫 Cons:
+Introduces latency
+
+Requires careful locking or atomic ops to avoid race conditions
+
+#### ✅ Race Condition Mitigation: Atomic Operations
+To avoid race conditions in Redis:
+
+Use atomic commands like INCR, INCRBY, or Lua scripts.
+
+Or use Redis' SETNX (Set if Not Exists) for first-time entries.
+
+Optionally wrap in Redis transactions (MULTI/EXEC) or Lua script:
+
+lua
+Copy
+Edit
+local current = redis.call("INCR", KEYS[1])
+if current == 1 then
+  redis.call("EXPIRE", KEYS[1], ARGV[1])
+end
+return current
 
 ### Data Sharding and Caching
 
