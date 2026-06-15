@@ -94,5 +94,376 @@ Cons: A missing node can lead to cache loss. We may get around this issue by sto
 
 A single machine is going to handle 1M QPS
 Map and LinkedList should be used as the data structures. We may get better performance on the double-pointer linked-list on the remove operation.
-Master-slave technique
+
+##
+
+```
+                            +----------------------+
+                            |  ZooKeeper / etcd    |
+                            |  (Cluster State)     |
+                            +----------------------+
+                                      ^
+                                      |
+                                      |
+                            Updates Cluster State
+                                      |
+                                      |
+                            +----------------------+
+                            |   Cluster Manager    |
+                            |                      |
+                            | Health Monitoring    |
+                            | Failover             |
+                            | Rebalancing          |
+                            | Shard Assignment     |
+                            +----------------------+
+                                      ^
+                                      |
+                                      |
+                                Heartbeats
+                                      |
+                                      |
+         ---------------------------------------------------------
+         |                       |                       |
+         v                       v                       v
+
++----------------+    +----------------+    +----------------+
+| Shard-1        |    | Shard-2        |    | Shard-3        |
+|                |    |                |    |                |
+| P   S1   S2    |    | P   S1   S2    |    | P   S1   S2    |
++----------------+    +----------------+    +----------------+
+
+         ^                       ^                       ^
+         |                       |                       |
+         +-----------------------+-----------------------+
+                                 |
+                                 |
+                         Cache Operations
+                                 |
+                                 |
+                      +----------------------+
+                      |     Cache Client     |
+                      |                      |
+                      | Consistent Hashing   |
+                      | Routing Logic        |
+                      | Connection Pools     |
+                      | Local Topology Cache |
+                      +----------------------+
+                                 ^
+                                 |
+                                 |
+                      +----------------------+
+                      |     API Server       |
+                      |   Business Logic     |
+                      +----------------------+
+                                 ^
+                                 |
+                                 |
+                           Load Balancer
+                                 ^
+                                 |
+                                 |
+                               User
+```
+
+## Component Responsibilities
+
+### User
+
+Sends request:
+
+GET /user/123
+
+### Load Balancer
+
+Distributes traffic.
+
+```
+User
+  |
+  v
+LB
+ / \
+API1 API2
+API Server
+```
+Contains business logic.
+
+Example:
+
+user := cacheClient.Get("user:123")
+
+### Cache Client (Library Inside API Server)
+
+This is the most important component.
+
+Responsibilities
+
+- Topology Cache
+
+Stores:
+
+```
+Shard1 -> 10.0.0.1
+Shard2 -> 10.0.0.4
+Shard3 -> 10.0.0.7
+```
+- Watch ZooKeeper
+  At startup:
+  Read topology
+  Then:
+  Watch topology changes using: /cache/shards/*
+
+- Consistent Hashing
+
+```
+hash(user:123)
+      |
+      v
+Shard2
+Routing
+GET user:123
+      |
+      v
+Shard2 Primary
+```
+- Failover Awareness
+  When topology changes:
+  Shard2:
+  Primary A -> B
+  Client updates local cache.
+  No restart required.
+
+### ZooKeeper / etcd
+
+Stores cluster metadata.
+Example:
+
+```
+{
+  "shard1": {
+    "primary":"10.0.0.1",
+    "replicas":[
+      "10.0.0.2",
+      "10.0.0.3"
+    ]
+  }
+}
+```
+#### Responsibilities
+
+- Consensus
+- Ensures all nodes agree.
+- Watches
+- Notify cache clients:
+
+```
+Primary changed
+New shard added
+Shard removed
+Strong Consistency
+Prevents split-brain metadata.
+```
+
+### Cluster Manager
+
+Responsibilities
+
+- Health Monitoring
+- Receives heartbeats.
+- Shard1 Primary alive?
+- Failure Detection
+- No heartbeat for 30s Mark node failed.
+
+#### Failover
+
+Before:
+
+```
+A(P)
+B(S)
+C(S)
+```
+After:
+
+```
+B(P)
+A(X)
+C(S)
+```
+#### Rebalancing
+
+Example:
+Shard1 memory = 95%
+Create:
+Shard4
+Move keys.
+
+#### Topology Updates
+
+Writes updates into ZooKeeper.
+Cache Shards
+Each shard:
+
+Primary
+Secondary
+Secondary
+
+Example:
+
+Shard1
+
+```
+P = 10.0.0.1
+S = 10.0.0.2
+S = 10.0.0.3
+```
+
+#### Write Flow
+
+```
+User
+ |
+LB
+ |
+API
+ |
+Cache Client
+ |
+Primary
+ |
++-----+
+|     |
+v     v
+S1    S2
+```
+
+#### Read Flow
+
+Option A
+Client -> Primary
+Strong consistency.
+
+Option B
+Client -> Secondary
+Higher scale.
+Potentially stale.
+
+#### Failover Flow
+Initial
+
+```
+A(P)
+B(S)
+C(S)
+```
+Primary Crash
+A(X)
+
+Cluster Manager Detects
+Heartbeat timeout.
+Promote
+B(P)
+C(S)
+Update ZooKeeper
+{
+  "primary":"B"
+}
+ZooKeeper Watch Fires
+
+All Cache Clients notified.
+
+Cache Clients Refresh
+
+Before:
+
+Shard1 -> A
+
+After:
+
+Shard1 -> B
+
+#### Request Path vs Control Path
+
+This distinction is crucial.
+
+##### Request Path
+
+Runs millions of times per second.
+
+```
+User
+ |
+LB
+ |
+API
+ |
+Cache Client
+ |
+Cache Shard
+```
+Fast path.
+
+##### Control Path
+
+Runs only during topology changes.
+
+```
+Cluster Manager
+      |
+      v
+ZooKeeper
+      |
+      v
+Cache Client Watches
+```
+
+Slow path.
+
+### Interview Summary
+
+
+Data Plane
+
+```
+User
+  |
+LB
+  |
+API Server
+  |
+Cache Client
+  |
+Cache Shards
+```
+
+Handles reads/writes.
+
+Control Plane
+
+```
+Cluster Manager
+       |
+ZooKeeper / etcd
+       |
+Cache Client Watches
+```
+
+Handles:
+
+- Node failure
+- Primary election
+- Rebalancing
+- Topology updates
+
+This architecture is very similar conceptually to:
+
+Kubernetes
+
+```
+etcd                -> ZooKeeper/etcd
+Controller Manager  -> Cluster Manager
+Pods                -> Cache Shards
+Kubelet             -> Cache Nodes
+Client-go Informer  -> Cache Client Watches
+```
 
