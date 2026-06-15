@@ -467,3 +467,197 @@ Kubelet             -> Cache Nodes
 Client-go Informer  -> Cache Client Watches
 ```
 
+## HA / SPOF Analysis (Add this to your notes)
+
+### 1. Cache Client
+
+Need HA? → NO
+Reason:
+
+```
+API Server 1 --> Cache Client Library
+API Server 2 --> Cache Client Library
+API Server 3 --> Cache Client Library
+```
+The cache client is just a library embedded inside every application server.
+
+Example:
+
+cacheClient.Get("user:123")
+There is no centralized cache client service.
+If App Server 1 dies:
+
+```
+App1 + CacheClient1  -> Down
+App2 + CacheClient2  -> Still Running
+App3 + CacheClient3  -> Still Running
+```
+Therefore:
+
+No SPOF
+No separate HA needed
+
+### 2. Application Servers
+Need HA? → YES
+
+```
+           Load Balancer
+                 |
+      -----------------------
+      |         |           |
+    App1      App2       App3
+```
+
+If App1 dies:
+LB redirects traffic to App2/App3
+Typical deployment:3+
+Application Instances
+
+or
+
+Kubernetes Deployment
+with multiple replicas
+
+### 3. ZooKeeper / etcd (Config Service)
+Need HA? → ABSOLUTELY YES
+This stores:
+
+- Cluster Topology
+- Primary/Secondary Mapping
+- Shard Metadata
+- Leader Election State
+
+If Config Service becomes unavailable:
+- No Failover
+- No Topology Updates
+- No Rebalancing
+
+Therefore deploy as a cluster:
+
+ZooKeeper1
+ZooKeeper2
+ZooKeeper3
+
+or
+
+etcd1
+etcd2
+etcd3
+
+Use odd numbers:
+
+3 nodes -> quorum = 2
+5 nodes -> quorum = 3
+
+Avoid:
+
+Single ZooKeeper Node
+Single etcd Node
+
+because that becomes a SPOF.
+
+### 4. Cluster Manager
+Need HA? → YES
+
+Usually multiple instances:
+CM1
+CM2
+CM3
+
+Using ZooKeeper/etcd leader election:
+CM1 = Active Leader
+CM2 = Standby
+CM3 = Standby
+
+If CM1 dies:
+CM2 becomes Leader
+
+Responsibilities:
+
+- Health Monitoring
+- Failover
+- Rebalancing
+- Shard Assignment
+
+### 5. Cache Shards
+Need HA? → YES
+
+Each shard:
+
+Primary
+Secondary
+Secondary
+
+Example:
+
+Shard1
+
+A(P)
+B(S)
+C(S)
+
+If A dies:
+
+B(P)
+C(S)
+
+after failover.
+
+This provides cache availability even during node failures.
+
+### Final HA Architecture
+
+  ``` 
+                         +----------------------+
+                         | ZooKeeper / etcd     |
+                         | 3 or 5 Nodes (HA)    |
+                         +----------------------+
+                                    ^
+                                    |
+                         Leader Election / Metadata
+                                    |
+                                    v
+
+                         +----------------------+
+                         | Cluster Managers     |
+                         | CM1 CM2 CM3          |
+                         | (One Active)         |
+                         +----------------------+
+
+                                    ^
+                                    |
+                              Heartbeats
+                                    |
+                                    v
+
+      +--------------------------------------------------+
+      | Cache Cluster                                    |
+      |                                                  |
+      | Shard1 : P,S,S                                   |
+      | Shard2 : P,S,S                                   |
+      | Shard3 : P,S,S                                   |
+      +--------------------------------------------------+
+
+                         ^
+                         |
+                  Cache Operations
+                         |
+                         v
+
+      +--------------------------------------------------+
+      | App Servers                                      |
+      |                                                  |
+      | App1 + CacheClient Library                       |
+      | App2 + CacheClient Library                       |
+      | App3 + CacheClient Library                       |
+      +--------------------------------------------------+
+
+                         ^
+                         |
+                    Load Balancer
+                         ^
+                         |
+                        User
+```
+
+
